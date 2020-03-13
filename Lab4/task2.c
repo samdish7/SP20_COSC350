@@ -5,24 +5,33 @@
 #include<fcntl.h>
 #include<unistd.h>
 int main(int argc, char* argv[]){
-	int in,out,offset;
+	int in,out,num;
 	char c[1];
 	umask(0);
-	/*if(argc !=3){
+	if(argc !=3){
 		printf("ARG ERROR!\n");
 		exit(0);
-	}*/
-	if((in=open(argv[1],O_RDONLY)<0)){
+	}
+	in=open(argv[1],O_RDONLY);
+	if (in<0){
 		printf("File Open Error!\n");
 		exit(0);
 	}
-	printf("File descriptor number ~> %d\n",in);
-	//out=open(argv[2],O_RDWR|O_CREAT,0666);
-	printf("File descriptor number after dup2 ~> %d\n",in);
-	while(read(in,&c,1)>0){
-		offset++;
+	out=open(argv[2],O_RDWR|O_CREAT,0666);
+	if(out<0){
+		printf("File Create Error!\n");
+		exit(0);
 	}
-	printf("Offset is ~> %d",offset);
+	dup2(out,1);
+	while(read(in,&c,1)>0){
+		if(num<65 && c[0] != ' '){
+			num = num * 10 + (c[0]-'0');
+		}
+		else{
+			printf("%c",num);
+			num=0;
+		}
+	}
 	close(in);
 	close(out);
 	return 0;

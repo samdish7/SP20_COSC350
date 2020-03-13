@@ -21,10 +21,10 @@ int main(int argc, char* argv[]){
         while(size>=0){
         read(in,&c,1);
         if(c==10){
-        printf("\n");
+        printf("10\n");
         }
         else if (c==32){
-        printf(" ");
+        printf("32 ");
         }
         else {
         printf("%d ",c);
